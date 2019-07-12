@@ -17,7 +17,6 @@ import static java.util.stream.Collectors.toList;
 @RestController
 @RequestMapping("/allocations")
 public class AllocationController {
-    private static Logger logger = LoggerFactory.getLogger(App.class);
 
     private final AllocationDataGateway gateway;
     private final ProjectClient client;
@@ -30,13 +29,16 @@ public class AllocationController {
 
     @PostMapping
     public ResponseEntity<AllocationInfo> create(@RequestBody AllocationForm form) {
-        logger.debug("Posting: {}", form);
+        System.out.println("Posting: ", form.toString());
 
         if (projectIsActive(form.projectId)) {
+            System.out.println("Creating via gateway");
             AllocationRecord record = gateway.create(formToFields(form));
+            System.out.println("Creation succeeded via gateway");
             return new ResponseEntity<>(present(record), HttpStatus.CREATED);
         }
 
+        System.out.println("Skipped creating via gateway: " + form.toString());
         return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
     }
 
