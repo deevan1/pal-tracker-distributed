@@ -17,6 +17,7 @@ import static java.util.stream.Collectors.toList;
 @RestController
 @RequestMapping("/allocations")
 public class AllocationController {
+    private static Logger logger = LoggerFactory.getLogger(App.class);
 
     private final AllocationDataGateway gateway;
     private final ProjectClient client;
@@ -29,6 +30,7 @@ public class AllocationController {
 
     @PostMapping
     public ResponseEntity<AllocationInfo> create(@RequestBody AllocationForm form) {
+        logger.debug("Posting: {}", form);
 
         if (projectIsActive(form.projectId)) {
             AllocationRecord record = gateway.create(formToFields(form));
