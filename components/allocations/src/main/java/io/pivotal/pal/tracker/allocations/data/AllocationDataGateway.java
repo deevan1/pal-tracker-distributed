@@ -25,6 +25,7 @@ public class AllocationDataGateway {
 
     public AllocationRecord create(AllocationFields fields) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
+        System.out.println("Gateway creation started");
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
@@ -37,6 +38,7 @@ public class AllocationDataGateway {
             ps.setDate(4, Date.valueOf(fields.lastDay));
             return ps;
         }, keyHolder);
+        System.out.println("Gateway creation completed");
 
         return find(keyHolder.getKey().longValue());
     }

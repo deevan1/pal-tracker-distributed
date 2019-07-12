@@ -29,7 +29,7 @@ public class AllocationController {
 
     @PostMapping
     public ResponseEntity<AllocationInfo> create(@RequestBody AllocationForm form) {
-        System.out.println("Posting: ", form.toString());
+        System.out.println("Posting: " + form.toString());
 
         if (projectIsActive(form.projectId)) {
             System.out.println("Creating via gateway");
