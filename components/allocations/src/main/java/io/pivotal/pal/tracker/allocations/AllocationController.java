@@ -29,25 +29,21 @@ public class AllocationController {
 
     @PostMapping
     public ResponseEntity<AllocationInfo> create(@RequestBody AllocationForm form) {
-        System.out.println("Posting: " + form.toString());
 
         if (projectIsActive(form.projectId)) {
-            System.out.println("Creating via gateway");
             AllocationRecord record = gateway.create(formToFields(form));
-            System.out.println("Creation succeeded via gateway");
             return new ResponseEntity<>(present(record), HttpStatus.CREATED);
         }
 
-        System.out.println("Skipped creating via gateway: " + form.toString());
         return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @GetMapping
     public List<AllocationInfo> list(@RequestParam long projectId) {
         return gateway.findAllByProjectId(projectId)
-            .stream()
-            .map(this::present)
-            .collect(toList());
+                .stream()
+                .map(this::present)
+                .collect(toList());
     }
 
 
@@ -59,21 +55,21 @@ public class AllocationController {
 
     private AllocationFields formToFields(AllocationForm form) {
         return allocationFieldsBuilder()
-            .projectId(form.projectId)
-            .userId(form.userId)
-            .firstDay(LocalDate.parse(form.firstDay))
-            .lastDay(LocalDate.parse(form.lastDay))
-            .build();
+                .projectId(form.projectId)
+                .userId(form.userId)
+                .firstDay(LocalDate.parse(form.firstDay))
+                .lastDay(LocalDate.parse(form.lastDay))
+                .build();
     }
 
     private AllocationInfo present(AllocationRecord record) {
         return allocationInfoBuilder()
-            .id(record.id)
-            .projectId(record.projectId)
-            .userId(record.userId)
-            .firstDay(record.firstDay.toString())
-            .lastDay(record.lastDay.toString())
-            .info("allocation info")
-            .build();
+                .id(record.id)
+                .projectId(record.projectId)
+                .userId(record.userId)
+                .firstDay(record.firstDay.toString())
+                .lastDay(record.lastDay.toString())
+                .info("allocation info")
+                .build();
     }
 }

@@ -25,11 +25,10 @@ public class AllocationDataGateway {
 
     public AllocationRecord create(AllocationFields fields) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        System.out.println("Gateway creation started");
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
-                "insert into allocations (project_id, user_id, first_day, last_day) values (?, ?, ?, ?)", RETURN_GENERATED_KEYS
+                    "insert into allocations (project_id, user_id, first_day, last_day) values (?, ?, ?, ?)", RETURN_GENERATED_KEYS
             );
 
             ps.setLong(1, fields.projectId);
@@ -38,32 +37,31 @@ public class AllocationDataGateway {
             ps.setDate(4, Date.valueOf(fields.lastDay));
             return ps;
         }, keyHolder);
-        System.out.println("Gateway creation completed");
 
         return find(keyHolder.getKey().longValue());
     }
 
     public List<AllocationRecord> findAllByProjectId(Long projectId) {
         return jdbcTemplate.query(
-            "select id, project_id, user_id, first_day, last_day from allocations where project_id = ? order by first_day",
-            rowMapper, projectId
+                "select id, project_id, user_id, first_day, last_day from allocations where project_id = ? order by first_day",
+                rowMapper, projectId
         );
     }
 
 
     private AllocationRecord find(long id) {
         return jdbcTemplate.queryForObject(
-            "select id, project_id, user_id, first_day, last_day from allocations where id = ?",
-            rowMapper, id
+                "select id, project_id, user_id, first_day, last_day from allocations where id = ?",
+                rowMapper, id
         );
     }
 
     private RowMapper<AllocationRecord> rowMapper =
-        (rs, rowNum) -> AllocationRecord.allocationRecordBuilder()
-            .id(rs.getLong("id"))
-            .projectId(rs.getLong("project_id"))
-            .userId(rs.getLong("user_id"))
-            .firstDay(rs.getDate("first_day").toLocalDate())
-            .lastDay(rs.getDate("last_day").toLocalDate())
-            .build();
+            (rs, rowNum) -> AllocationRecord.allocationRecordBuilder()
+                    .id(rs.getLong("id"))
+                    .projectId(rs.getLong("project_id"))
+                    .userId(rs.getLong("user_id"))
+                    .firstDay(rs.getDate("first_day").toLocalDate())
+                    .lastDay(rs.getDate("last_day").toLocalDate())
+                    .build();
 }
