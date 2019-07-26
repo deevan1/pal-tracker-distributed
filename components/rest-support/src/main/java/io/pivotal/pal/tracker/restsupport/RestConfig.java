@@ -13,7 +13,6 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 public class RestConfig {
 
     @LoadBalanced
-    @Bean
     public RestOperations restOperations() {
         return new RestTemplate();
     }
