@@ -1,4 +1,4 @@
-ackage io.pivotal.pal.tracker.oauthserver;
+package io.pivotal.pal.tracker.oauthserver;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
