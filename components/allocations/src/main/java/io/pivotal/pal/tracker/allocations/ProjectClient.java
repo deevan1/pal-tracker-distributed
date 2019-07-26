@@ -1,6 +1,9 @@
 package io.pivotal.pal.tracker.allocations;
 
 import org.springframework.web.client.RestOperations;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 public class ProjectClient {
 
